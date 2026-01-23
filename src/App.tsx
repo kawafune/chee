@@ -1,6 +1,5 @@
-// 修正点1: 使っていない 'React' と 'Heart' を削除しました
 import { useState } from 'react';
-import { Play, Users, MapPin, ChevronRight, Search, LayoutGrid, Map } from 'lucide-react';
+import { Play, Users, MapPin, ChevronRight, Search, LayoutGrid, Map, Menu, X } from 'lucide-react';
 
 // ダミーデータ：カテゴリと動画コンテンツ
 const allVideos = [
@@ -30,21 +29,21 @@ const allVideos = [
 const categories = ["郷土料理", "伝統工芸", "健康・暮らし"];
 
 export default function ChiikuriApp() {
-  // 修正点2: <any> を追加して、どんなデータが入ってもエラーにならないようにしました
   const [playingVideo, setPlayingVideo] = useState<any>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans pb-20">
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col">
       
       {/* ヘッダー */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-sm">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src="/chiicri_logo.png" alt="ちぃくり" className="h-10 object-contain" />
+            <img src="/chiicri_logo.png" alt="ちぃくり" className="h-8 md:h-10 object-contain" />
           </div>
           
           {/* PC用ナビゲーション */}
-          <nav className="hidden md:flex gap-6 text-sm font-medium text-slate-600">
+          <nav className="hidden md:flex gap-6 text-sm font-medium text-slate-600 absolute left-1/2 -translate-x-1/2">
             <a href="#" className="hover:text-teal-600 transition flex items-center gap-1">
               教室を探す
             </a>
@@ -56,14 +55,40 @@ export default function ChiikuriApp() {
             <a href="#" className="hover:text-teal-600 transition">マイページ</a>
           </nav>
           
-          <button className="bg-gradient-to-r from-emerald-400 to-cyan-500 text-white px-4 py-2 rounded-full text-sm font-bold hover:opacity-90 transition shadow-md">
-            会員登録
-          </button>
+          {/* 右側エリア：会員登録ボタン ＋ ハンバーガーメニュー */}
+          <div className="flex items-center gap-3 md:gap-4">
+            {/* 会員登録ボタン（常時表示・スマホでは少し小さく） */}
+            <button className="bg-gradient-to-r from-emerald-400 to-cyan-500 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold hover:opacity-90 transition shadow-md whitespace-nowrap">
+              会員登録
+            </button>
+
+            {/* スマホ用ハンバーガーボタン */}
+            <button 
+              className="md:hidden text-slate-600 p-1"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
+
+        {/* スマホ用メニュー展開エリア（会員登録ボタンは上に出したので削除） */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white border-t border-slate-100 absolute w-full shadow-lg animate-in slide-in-from-top-2">
+            <div className="flex flex-col p-4 gap-4 text-slate-600 font-medium text-sm">
+              <a href="#" className="py-2 border-b border-slate-50 hover:text-teal-600">教室を探す</a>
+              <a href="#" className="py-2 border-b border-slate-50 hover:text-teal-600 flex items-center gap-2">
+                <Map size={18} /> 地図から探す
+              </a>
+              <a href="#" className="py-2 border-b border-slate-50 hover:text-teal-600">講師になる</a>
+              <a href="#" className="py-2 hover:text-teal-600">マイページ</a>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* メインエリア */}
-      <main>
+      <main className="flex-grow">
         
         {/* ヒーローエリア */}
         <div className="bg-slate-900 text-white">
@@ -175,6 +200,21 @@ export default function ChiikuriApp() {
 
         </div>
       </main>
+
+      {/* フッター */}
+      <footer className="bg-slate-100 border-t border-slate-200 mt-12 py-8">
+        <div className="max-w-7xl mx-auto px-4 text-center space-y-4">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm text-slate-600">
+            <a href="#" className="hover:text-teal-600 transition">運営会社</a>
+            <a href="#" className="hover:text-teal-600 transition">利用規約</a>
+            <a href="#" className="hover:text-teal-600 transition">プライバシーポリシー</a>
+            <a href="#" className="hover:text-teal-600 transition">お問い合わせ</a>
+          </div>
+          <p className="text-xs text-slate-400">
+            &copy; {new Date().getFullYear()} Chiikuri. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
