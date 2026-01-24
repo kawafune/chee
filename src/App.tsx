@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { MapPin, Map as MapIcon, Lock, Play, Search, LayoutGrid, ChevronRight, Heart, Users, Calendar, ExternalLink } from 'lucide-react';
+import { useState } from 'react';
+import { MapPin, Map as MapIcon, Lock, Play, Search, LayoutGrid, ChevronRight, Heart, Calendar, ExternalLink } from 'lucide-react';
 import { Header } from './components/Navigation';
 import { BecomeInstructorPage, RegisterPage, PrivacyPage, MyPage } from './components/Pages';
 import { JapanMap } from './components/JapanMap';
@@ -127,7 +127,7 @@ export default function ChiikuriApp() {
               </div>
             )}
 
-            {view === 'mypage' && <MyPage userInfo={userInfo} setUserInfo={setUserInfo} allVideosData={allVideosData} instructorsData={instructorsData} likedVideos={likedVideos} toggleLike={toggleLike} setView={setView} setPlayingVideo={setPlayingVideo} />}
+            {view === 'mypage' && <MyPage userInfo={userInfo} setUserInfo={setUserInfo} allVideosData={allVideosData} likedVideos={likedVideos} toggleLike={toggleLike} setView={setView} setPlayingVideo={setPlayingVideo} />}
             {view === 'register' && <RegisterPage setView={setView} />}
             {view === 'become-instructor' && <BecomeInstructorPage />}
             {view === 'privacy' && <PrivacyPage />}
@@ -135,7 +135,6 @@ export default function ChiikuriApp() {
         )}
       </main>
 
-      {/* リッチなフッター */}
       <footer className="bg-slate-50 border-t border-slate-200 p-12 text-center font-sans">
         <div className="max-w-7xl mx-auto space-y-8">
           <img src="/chiicri_logo.png" alt="ちぃくり" className="h-10 mx-auto opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition" />

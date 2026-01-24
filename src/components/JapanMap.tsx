@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { MapPin, MousePointer2, ZoomIn, ZoomOut } from 'lucide-react';
 import { MAP_PATHS } from '../MapData';
 import { allVideosData } from '../data';
@@ -30,7 +30,7 @@ export const JapanMap = ({ onSelectPrefecture }: any) => {
 
   // 1. ホイールズーム (PC)
   const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault(); // ブラウザのスクロールを防ぐ
+    e.preventDefault();
     const zoomAmount = -e.deltaY * 0.001;
     handleZoom(zoomAmount);
   };
@@ -50,7 +50,7 @@ export const JapanMap = ({ onSelectPrefecture }: any) => {
         e.touches[0].clientX - e.touches[1].clientX,
         e.touches[0].clientY - e.touches[1].clientY
       );
-      setLastDist(dist);
+      lastDist.current = dist; // ★修正: setLastDist -> lastDist.current
       setIsDragging(false);
     } else {
       handleStart(e.touches[0].clientX, e.touches[0].clientY);
@@ -79,7 +79,7 @@ export const JapanMap = ({ onSelectPrefecture }: any) => {
       );
       const zoomChange = (dist - lastDist.current) * 0.01;
       handleZoom(zoomChange);
-      setLastDist(dist);
+      lastDist.current = dist; // ★修正: setLastDist -> lastDist.current
       return;
     }
     handleMove(e.touches[0].clientX, e.touches[0].clientY);
@@ -89,7 +89,7 @@ export const JapanMap = ({ onSelectPrefecture }: any) => {
   const handleEnd = () => {
     setIsDragging(false);
     setCursor('cursor-grab');
-    setLastDist(null);
+    lastDist.current = null; // ★修正: setLastDist -> lastDist.current
   };
 
   // 5. クリック処理
@@ -110,7 +110,6 @@ export const JapanMap = ({ onSelectPrefecture }: any) => {
          onTouchEnd={handleEnd}
          onWheel={handleWheel}
     >
-      {/* ズームコントローラー（items-startを追加して幅を修正） */}
       <div className="absolute top-4 left-4 z-10 flex flex-col gap-2 items-start">
         <div className="bg-white/80 backdrop-blur px-3 py-2 rounded-lg shadow-sm text-xs text-slate-500 pointer-events-none flex items-center gap-2">
           <MousePointer2 size={16} className="text-slate-400" />
@@ -144,7 +143,6 @@ export const JapanMap = ({ onSelectPrefecture }: any) => {
                   <path d={pref.d} fill={isActive ? "#ccfbf1" : "#ffffff"} stroke="#64748b" strokeWidth={1 / scale} /> 
                   
                   {isActive && pinPos.x !== 0 && (
-                    // ピンのサイズを 0.7 -> 0.9 に変更
                     <g transform={`translate(${pinPos.x + 10}, ${pinPos.y + 10}) scale(${0.9 / scale})`}>
                       <circle cx="0" cy="0" r="14" fill="#0d9488" className="animate-pulse opacity-70" />
                       <circle cx="0" cy="0" r="6" fill="white" />
