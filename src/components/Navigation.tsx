@@ -2,12 +2,12 @@ import { Menu, X, Bell, LayoutGrid, Map as MapIcon, Users, User } from 'lucide-r
 
 export const Header = ({ setView, setIsMenuOpen, isMenuOpen, notifications, setNotifications }: any) => (
   <>
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm h-16 flex items-center px-4 justify-between font-sans">
+    <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm h-16 flex items-center px-4 justify-between font-sans relative">
       <div className="flex items-center gap-2 cursor-pointer group" onClick={() => setView('home')}>
         <img src="/chiicri_logo.png" alt="ちぃくり" className="h-8 md:h-10 object-contain group-hover:opacity-80 transition" />
       </div>
       
-      {/* PC用ナビゲーション（アイコン追加） */}
+      {/* PC用ナビゲーション */}
       <nav className="hidden md:flex gap-8 font-bold text-slate-600 text-sm">
         <button onClick={() => setView('home')} className="hover:text-teal-600 transition flex items-center gap-2">
           <LayoutGrid size={18} /> カテゴリー
@@ -38,24 +38,32 @@ export const Header = ({ setView, setIsMenuOpen, isMenuOpen, notifications, setN
       </div>
     </header>
 
-    {/* モバイルメニュー（アイコン追加） */}
+    {/* モバイルメニュー */}
     {isMenuOpen && (
-      <div className="md:hidden bg-white border-b border-slate-100 fixed top-16 w-full z-40 shadow-xl animate-in slide-in-from-top-2 font-sans">
-        <div className="flex flex-col p-4 text-slate-600 font-bold text-lg space-y-2">
-          <button onClick={() => {setView('home'); setIsMenuOpen(false);}} className="text-left py-3 border-b border-slate-50 hover:text-teal-600 hover:bg-slate-50 px-2 rounded transition flex items-center gap-3">
-            <LayoutGrid size={20} /> カテゴリーから探す
-          </button>
-          <button onClick={() => {setView('map'); setIsMenuOpen(false);}} className="text-left py-3 border-b border-slate-50 hover:text-teal-600 hover:bg-slate-50 px-2 rounded transition flex items-center gap-3">
-            <MapIcon size={20} /> 地図から探す
-          </button>
-          <button onClick={() => {setView('become-instructor'); setIsMenuOpen(false);}} className="text-left py-3 border-b border-slate-50 hover:text-teal-600 hover:bg-slate-50 px-2 rounded transition flex items-center gap-3">
-            <Users size={20} /> 講師になる
-          </button>
-          <button onClick={() => {setView('mypage'); setIsMenuOpen(false);}} className="text-left py-3 hover:text-teal-600 hover:bg-slate-50 px-2 rounded transition flex items-center gap-3">
-            <User size={20} /> マイページ
-          </button>
+      <>
+        {/* ▼ 追加: メニューの外側（背景）をタップしたら閉じるための透明な膜 ▼ */}
+        <div 
+          className="fixed inset-0 z-30 bg-black/20 md:hidden" 
+          onClick={() => setIsMenuOpen(false)}
+        />
+
+        <div className="md:hidden bg-white border-b border-slate-100 fixed top-16 w-full z-40 shadow-xl animate-in slide-in-from-top-2 font-sans">
+          <div className="flex flex-col p-4 text-slate-600 font-bold text-lg space-y-2">
+            <button onClick={() => {setView('home'); setIsMenuOpen(false);}} className="text-left py-3 border-b border-slate-50 hover:text-teal-600 hover:bg-slate-50 px-2 rounded transition flex items-center gap-3">
+              <LayoutGrid size={20} /> カテゴリーから探す
+            </button>
+            <button onClick={() => {setView('map'); setIsMenuOpen(false);}} className="text-left py-3 border-b border-slate-50 hover:text-teal-600 hover:bg-slate-50 px-2 rounded transition flex items-center gap-3">
+              <MapIcon size={20} /> 地図から探す
+            </button>
+            <button onClick={() => {setView('become-instructor'); setIsMenuOpen(false);}} className="text-left py-3 border-b border-slate-50 hover:text-teal-600 hover:bg-slate-50 px-2 rounded transition flex items-center gap-3">
+              <Users size={20} /> 講師になる
+            </button>
+            <button onClick={() => {setView('mypage'); setIsMenuOpen(false);}} className="text-left py-3 hover:text-teal-600 hover:bg-slate-50 px-2 rounded transition flex items-center gap-3">
+              <User size={20} /> マイページ
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     )}
   </>
 );
