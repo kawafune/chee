@@ -31,9 +31,8 @@ const allVideosData = [
 ];
 
 // ==========================================
-// 2. 地図データ (形式統一版: 全てd属性を使用)
+// 2. 地図データ
 // ==========================================
-// これにより、座標計算の不具合が解消され、ピンが確実に表示されます。
 const MAP_PATHS = [
   { name: "北海道", d: "M4,240 L3,245 L0,246 L0,237 L6,235 L4,240 Z M33,261 L32,250 L28,243 L23,242 L21,237 L17,236 L15,231 L19,223 L17,212 L19,209 L28,207 L34,198 L37,202 L39,201 L43,192 L49,187 L39,173 L40,166 L47,164 L60,174 L71,171 L71,174 L78,177 L83,174 L89,165 L83,140 L86,135 L93,132 L97,126 L96,103 L100,95 L101,85 L98,67 L90,48 L93,39 L92,33 L94,36 L99,35 L105,28 L131,55 L139,68 L155,85 L184,104 L213,109 L214,113 L219,118 L238,118 L260,91 L262,96 L252,119 L252,129 L255,135 L265,138 L263,140 L264,137 L258,137 L263,149 L269,156 L273,157 L280,149 L287,148 L277,156 L275,163 L258,166 L256,172 L252,177 L247,177 L245,175 L246,173 L243,172 L240,178 L243,180 L228,181 L220,178 L205,186 L191,202 L182,216 L179,225 L180,240 L178,248 L164,237 L141,228 L113,211 L100,209 L103,206 L88,214 L72,230 L69,227 L73,227 L68,226 L66,220 L58,212 L47,213 L42,220 L39,230 L40,234 L52,242 L62,242 L71,254 L80,257 L82,260 L76,265 L72,267 L63,263 L60,265 L60,261 L57,260 L55,265 L48,269 L48,278 L40,282 L37,287 L30,284 L27,278 L28,269 L33,261 Z", transform: "translate(602, 10)" },
   { name: "青森", d: "M3 71 L3 63 L0 60 L6 51 L12 51 L18 47 L21 31 L17 27 L20 26 L21 19 L27 23 L31 20 L35 23 L37 38 L40 45 L46 41 L45 37 L47 33 L58 42 L61 39 L65 23 L61 16 L55 22 L41 25 L47 0 L64 11 L73 6 L71 37 L73 51 L77 62 L81 61 L86 67 L80 74 L75 72 L71 75 L69 72 L56 82 L52 81 L53 70 L48 70 L48 65 L38 72 L35 70 L32 72 L25 67 L22 70 L10 68 L7 72 Z", transform: "translate(624, 287)" },
@@ -90,7 +89,7 @@ const JapanMap = ({ onSelectPrefecture }: { onSelectPrefecture: (pref: string) =
   // ピンの座標を取得する関数
   const getPinPosition = (d: string) => {
     // 例: "M395,65l-10..." -> x=395, y=65
-    const match = d.match(/M\s*([\d\.]+)[,\s]([\d\.]+)/);
+    const match = d.match(/M\s*([\d\.]+)[,\s]+([\d\.]+)/);
     if (match) {
       return { x: parseFloat(match[1]), y: parseFloat(match[2]) };
     }
@@ -103,7 +102,19 @@ const JapanMap = ({ onSelectPrefecture }: { onSelectPrefecture: (pref: string) =
         <g transform="translate(6, 18)">
           {MAP_PATHS.map((pref, i) => {
             const isActive = activePrefs.some(p => pref.name.startsWith(p));
+            // ピンの位置計算
             const pinPos = getPinPosition(pref.d || "");
+            const hasPoints = 'points' in pref;
+            
+            // pointsデータがある場合は最初の座標を取得 (簡易的)
+            if (hasPoints && pinPos.x === 0) {
+               const p = (pref as any).points.split(' ');
+               if(p.length >= 2) {
+                 pinPos.x = parseFloat(p[0]);
+                 pinPos.y = parseFloat(p[1]);
+               }
+            }
+
             return (
               <g 
                 key={i}
@@ -112,15 +123,14 @@ const JapanMap = ({ onSelectPrefecture }: { onSelectPrefecture: (pref: string) =
                   if (isActive) onSelectPrefecture(pref.name);
                 }}
                 className={`transition-all duration-300 ${isActive ? 'cursor-pointer hover:opacity-80' : 'fill-white stroke-slate-300'}`}
-                transform={pref.transform}
+                transform={(pref as any).transform}
               >
                 <title>{pref.name}</title>
-                <path 
-                  d={pref.d} 
-                  fill={isActive ? "#ccfbf1" : "#ffffff"} 
-                  stroke="#64748b" 
-                  strokeWidth="1" 
-                />
+                {(pref as any).points ? (
+                  <polygon points={(pref as any).points} fill={isActive ? "#ccfbf1" : "#ffffff"} stroke="#64748b" strokeWidth="1" />
+                ) : (
+                  <path d={pref.d} fill={isActive ? "#ccfbf1" : "#ffffff"} stroke="#64748b" strokeWidth="1" />
+                )}
                 
                 {isActive && pinPos.x !== 0 && (
                    <g transform={`translate(${pinPos.x + 10}, ${pinPos.y + 10}) scale(0.5)`}>
