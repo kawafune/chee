@@ -1,9 +1,8 @@
-// src/components/Pages.tsx
 import { useState, useRef, useEffect } from 'react';
 import { MapPin, Edit2, Check, XCircle, Plus, Video, Users, Heart, Lock, Calendar } from 'lucide-react';
 
 // --- リッチなマイページ ---
-export const MyPage = ({ userInfo, setUserInfo, allVideosData, instructorsData, likedVideos, toggleLike, setView, setPlayingVideo }: any) => {
+export const MyPage = ({ userInfo, setUserInfo, allVideosData, likedVideos, toggleLike, setView, setPlayingVideo }: any) => {
   const [activeTab, setActiveTab] = useState<'videos' | 'instructors'>('videos');
   const [editingField, setEditingField] = useState<string | null>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -73,7 +72,6 @@ export const MyPage = ({ userInfo, setUserInfo, allVideosData, instructorsData, 
           )}
           {activeTab === 'instructors' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in">
-               {/* フォロー機能はまだApp.tsxと繋がっていないためダミー表示 */}
                <div className="col-span-full text-center text-slate-400 py-12 flex flex-col items-center gap-2"><Users size={40} className="opacity-20"/><p>まだフォロー中の講師はいません</p></div>
             </div>
           )}
@@ -83,7 +81,6 @@ export const MyPage = ({ userInfo, setUserInfo, allVideosData, instructorsData, 
   );
 };
 
-// --- 他のページのリッチ化 ---
 export const BecomeInstructorPage = () => (
   <div className="max-w-2xl mx-auto p-8 bg-white my-12 rounded-3xl shadow-lg border border-slate-100 font-sans animate-in slide-in-from-bottom-4">
     <div className="text-center mb-8"><h2 className="text-3xl font-bold text-slate-800 mb-2">講師になる</h2><p className="text-slate-500">あなたの知恵と技を、次の世代へ繋ぎませんか？</p></div>
@@ -116,7 +113,7 @@ export const PrivacyPage = () => (
       <p>ちぃくり（以下、「当サービス」といいます。）は、本ウェブサイト上で提供するサービスにおける、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。</p>
       <h3 className="text-lg font-bold text-slate-800 mt-6">第1条（個人情報）</h3>
       <p>「個人情報」とは、個人情報保護法にいう「個人情報」を指すものとし、生存する個人に関する情報であって、当該情報に含まれる氏名、生年月日、住所、電話番号、連絡先その他の記述等により特定の個人を識別できる情報を指します。</p>
-      <p className="text-sm text-slate-400 mt-8 bg-slate-50 p-4 rounded-lg">※ これはサンプルテキストです。</p>
+      <p className="text-sm text-slate-400 mt-8 bg-slate-50 p-4 rounded-lg">※ サンプルテキストです。</p>
     </div>
   </div>
 );
