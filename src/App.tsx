@@ -7,8 +7,7 @@ import { LoginModal } from './components/Auth';
 import { Hero } from './components/Hero';
 import { VideoList } from './components/VideoList';
 import { MapPage } from './components/MapPage';
-// ▼ 修正箇所: ここを '../data' ではなく './data' にします
-import { instructorsData, allVideosData } from './data';
+// ★ import { ... } from './data'; の行を削除しました
 
 export default function ChiikuriApp() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -94,7 +93,7 @@ export default function ChiikuriApp() {
           onClose={() => setPlayingVideo(null)} 
           likedVideos={likedVideos} 
           toggleLike={toggleLike} 
-          // setView={setView} ← これを削除することでVideoPlayer側のエラーも解消
+          setView={setView}
           onRequireAuth={handleRequireAuth} 
         />
       )}
