@@ -1,8 +1,8 @@
 import { X, Lock, Play, Clock, Calendar, MapPin, Heart, Share2, ExternalLink } from 'lucide-react';
 import { instructorsData } from '../data';
 
-// ★ onRequireAuth を受け取る
-export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, setView, onRequireAuth }: any) => {
+// ▼ 修正箇所: setView を削除しました
+export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, onRequireAuth }: any) => {
   if (!video) return null;
 
   const instructor = instructorsData[video.instructor];
@@ -33,7 +33,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, setView, 
                 月額会員になると、{video.instructor}先生のすべての動画が見放題になります。
               </p>
               <button 
-                onClick={onRequireAuth} // ★ここ
+                onClick={onRequireAuth} 
                 className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white text-sm md:text-xl font-bold px-6 py-2 md:px-10 md:py-4 rounded-full shadow-lg hover:scale-105 transition transform"
               >
                 今すぐ無料体験を始める
@@ -41,7 +41,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, setView, 
             </div>
           ) : (
             <div 
-              onClick={onRequireAuth} // ★ここ
+              onClick={onRequireAuth} 
               className="absolute inset-0 flex items-center justify-center group cursor-pointer"
             >
               <div className="w-16 h-16 md:w-24 md:h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md group-hover:scale-110 transition duration-300 border-2 border-white/50">
@@ -79,7 +79,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, setView, 
                 {likedVideos.includes(video.id) ? 'お気に入り済み' : 'お気に入り'}
               </button>
               <button 
-                onClick={onRequireAuth} // ★ここ
+                onClick={onRequireAuth} 
                 className="flex-1 py-3 rounded-xl font-bold flex items-center justify-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700 transition"
               >
                 <Share2 size={20} /> シェアする
@@ -98,7 +98,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, setView, 
                 </div>
               </div>
               <button 
-                onClick={() => { onClose(); onRequireAuth(); }} // ★ここ
+                onClick={() => { onClose(); onRequireAuth(); }} 
                 className="w-full bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg text-sm font-bold transition"
               >
                 プロフィールを見る
@@ -109,7 +109,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, setView, 
               <h3 className="font-bold text-lg mb-2 text-white">教室に行ってみる？</h3>
               <p className="text-teal-200 text-sm mb-4">動画の先生から直接習うことができます。体験予約はこちらから。</p>
               <button 
-                onClick={onRequireAuth} // ★ここ
+                onClick={onRequireAuth} 
                 className="w-full bg-white text-teal-900 font-bold py-3 rounded-xl hover:bg-teal-50 transition flex items-center justify-center gap-2"
               >
                 <ExternalLink size={18} /> 教室を予約する
