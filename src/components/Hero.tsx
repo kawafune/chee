@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react';
 
+// ★ ({ onRequireAuth }: any) を忘れずに！
 export const Hero = ({ onRequireAuth }: any) => {
   return (
     <div className="bg-slate-900 text-white animate-in fade-in">
@@ -18,7 +19,7 @@ export const Hero = ({ onRequireAuth }: any) => {
           />
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-teal-500 transition" size={24} />
           <button 
-            onClick={onRequireAuth} // ★検索ボタンで認証チェック
+            onClick={onRequireAuth} // ★ここで実行
             className="absolute right-2 top-2 bottom-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-8 rounded-full font-bold hover:shadow-lg hover:scale-105 transition"
           >
             検索

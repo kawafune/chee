@@ -14,7 +14,6 @@ export default function ChiikuriApp() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [view, setView] = useState<'home' | 'map' | 'register' | 'become-instructor' | 'privacy' | 'mypage'>('home');
   
-  // ユーザー情報
   const [userInfo, setUserInfo] = useState({
     name: "ちぃくり 太郎",
     region: "東京都杉並区",
@@ -27,7 +26,7 @@ export default function ChiikuriApp() {
   const [playingVideo, setPlayingVideoState] = useState<any>(null);
   const [likedVideos, setLikedVideos] = useState<number[]>([]);
 
-  // --- 認証ロジック (24時間ルール) ---
+  // --- 認証ロジック ---
   useEffect(() => {
     const savedAuth = localStorage.getItem('chiicri_auth');
     if (savedAuth) {
@@ -57,14 +56,14 @@ export default function ChiikuriApp() {
     setView('home');
   };
 
-  // ★追加: 汎用的な認証チェック関数
+  // ★重要: この関数を各部品に渡します
   const handleRequireAuth = () => {
     if (!isAuthenticated) {
       setShowLoginModal(true);
     }
   };
 
-  // --- アクションの制御 ---
+  // --- アクション制御 ---
   const setPlayingVideo = (video: any) => {
     setPlayingVideoState(video);
   };
@@ -96,14 +95,14 @@ export default function ChiikuriApp() {
           likedVideos={likedVideos} 
           toggleLike={toggleLike} 
           setView={setView}
-          onRequireAuth={handleRequireAuth} // ★これを渡す
+          onRequireAuth={handleRequireAuth} // ★渡す
         />
       )}
 
       <main className="flex-grow">
         {view === 'home' && (
           <>
-            <Hero onRequireAuth={handleRequireAuth} /> {/* ★これを渡す */}
+            <Hero onRequireAuth={handleRequireAuth} /> {/* ★渡す */}
             <VideoList 
               setPlayingVideo={setPlayingVideo}
               toggleLike={toggleLike}
@@ -116,7 +115,7 @@ export default function ChiikuriApp() {
         
         {view === 'mypage' && <MyPage userInfo={userInfo} setUserInfo={setUserInfo} allVideosData={allVideosData} instructorsData={instructorsData} likedVideos={likedVideos} toggleLike={toggleLike} setView={setView} setPlayingVideo={setPlayingVideo} />}
         
-        {view === 'register' && <RegisterPage setView={setView} onRequireAuth={handleRequireAuth} />} {/* ★これを渡す */}
+        {view === 'register' && <RegisterPage setView={setView} onRequireAuth={handleRequireAuth} />} {/* ★渡す */}
         
         {view === 'become-instructor' && <BecomeInstructorPage />}
         {view === 'privacy' && <PrivacyPage />}
