@@ -7,13 +7,14 @@ import { LoginModal } from './components/Auth';
 import { Hero } from './components/Hero';
 import { VideoList } from './components/VideoList';
 import { MapPage } from './components/MapPage';
-import { instructorsData, allVideosData } from './data';
+import { instructorsData, allVideosData } from './data'; // ← ここを修正（categoriesを削除）
 
 export default function ChiikuriApp() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [view, setView] = useState<'home' | 'map' | 'register' | 'become-instructor' | 'privacy' | 'mypage'>('home');
   
+  // ユーザー情報
   const [userInfo, setUserInfo] = useState({
     name: "ちぃくり 太郎",
     region: "東京都杉並区",
@@ -56,7 +57,6 @@ export default function ChiikuriApp() {
     setView('home');
   };
 
-  // ★重要: この関数を各部品に渡します
   const handleRequireAuth = () => {
     if (!isAuthenticated) {
       setShowLoginModal(true);
@@ -95,14 +95,14 @@ export default function ChiikuriApp() {
           likedVideos={likedVideos} 
           toggleLike={toggleLike} 
           setView={setView}
-          onRequireAuth={handleRequireAuth} // ★渡す
+          onRequireAuth={handleRequireAuth} 
         />
       )}
 
       <main className="flex-grow">
         {view === 'home' && (
           <>
-            <Hero onRequireAuth={handleRequireAuth} /> {/* ★渡す */}
+            <Hero onRequireAuth={handleRequireAuth} />
             <VideoList 
               setPlayingVideo={setPlayingVideo}
               toggleLike={toggleLike}
@@ -115,7 +115,7 @@ export default function ChiikuriApp() {
         
         {view === 'mypage' && <MyPage userInfo={userInfo} setUserInfo={setUserInfo} allVideosData={allVideosData} instructorsData={instructorsData} likedVideos={likedVideos} toggleLike={toggleLike} setView={setView} setPlayingVideo={setPlayingVideo} />}
         
-        {view === 'register' && <RegisterPage setView={setView} onRequireAuth={handleRequireAuth} />} {/* ★渡す */}
+        {view === 'register' && <RegisterPage setView={setView} onRequireAuth={handleRequireAuth} />}
         
         {view === 'become-instructor' && <BecomeInstructorPage />}
         {view === 'privacy' && <PrivacyPage />}
