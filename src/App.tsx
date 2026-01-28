@@ -57,14 +57,18 @@ export default function ChiikuriApp() {
     setView('home');
   };
 
+  // ★追加: 汎用的な認証チェック関数
+  const handleRequireAuth = () => {
+    if (!isAuthenticated) {
+      setShowLoginModal(true);
+    }
+  };
+
   // --- アクションの制御 ---
-  
-  // 動画再生
   const setPlayingVideo = (video: any) => {
     setPlayingVideoState(video);
   };
 
-  // いいね
   const toggleLike = (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
     if (!isAuthenticated) {
@@ -78,7 +82,6 @@ export default function ChiikuriApp() {
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans relative">
       <Header setView={setView} setIsMenuOpen={setIsMenuOpen} isMenuOpen={isMenuOpen} notifications={notifications} setNotifications={setNotifications} />
       
-      {/* ログインモーダル */}
       {showLoginModal && (
         <LoginModal 
           onClose={() => setShowLoginModal(false)} 
@@ -86,21 +89,21 @@ export default function ChiikuriApp() {
         />
       )}
 
-      {/* 動画プレーヤー */}
       {playingVideo && (
         <VideoPlayer 
           video={playingVideo} 
           onClose={() => setPlayingVideo(null)} 
           likedVideos={likedVideos} 
           toggleLike={toggleLike} 
-          setView={setView} 
+          setView={setView}
+          onRequireAuth={handleRequireAuth} // ★これを渡す
         />
       )}
 
       <main className="flex-grow">
         {view === 'home' && (
           <>
-            <Hero />
+            <Hero onRequireAuth={handleRequireAuth} /> {/* ★これを渡す */}
             <VideoList 
               setPlayingVideo={setPlayingVideo}
               toggleLike={toggleLike}
@@ -112,7 +115,9 @@ export default function ChiikuriApp() {
         {view === 'map' && <MapPage setPlayingVideo={setPlayingVideo} />}
         
         {view === 'mypage' && <MyPage userInfo={userInfo} setUserInfo={setUserInfo} allVideosData={allVideosData} instructorsData={instructorsData} likedVideos={likedVideos} toggleLike={toggleLike} setView={setView} setPlayingVideo={setPlayingVideo} />}
-        {view === 'register' && <RegisterPage setView={setView} />}
+        
+        {view === 'register' && <RegisterPage setView={setView} onRequireAuth={handleRequireAuth} />} {/* ★これを渡す */}
+        
         {view === 'become-instructor' && <BecomeInstructorPage />}
         {view === 'privacy' && <PrivacyPage />}
       </main>
