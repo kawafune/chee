@@ -81,17 +81,46 @@ export const MyPage = ({ userInfo, setUserInfo, allVideosData, likedVideos, togg
   );
 };
 
-export const BecomeInstructorPage = () => (
-  <div className="max-w-2xl mx-auto p-8 bg-white my-12 rounded-3xl shadow-lg border border-slate-100 font-sans animate-in slide-in-from-bottom-4">
-    <div className="text-center mb-8"><h2 className="text-3xl font-bold text-slate-800 mb-2">講師になる</h2><p className="text-slate-500">あなたの知恵と技を、次の世代へ繋ぎませんか？</p></div>
-    <div className="space-y-6">
-      <div><label className="block text-sm font-bold text-slate-700 mb-2">お名前 <span className="text-red-500">*</span></label><input className="w-full border-2 border-slate-200 p-4 rounded-xl focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 transition outline-none font-bold" placeholder="例：山田 花子" /></div>
-      <div><label className="block text-sm font-bold text-slate-700 mb-2">活動地域 <span className="text-red-500">*</span></label><input className="w-full border-2 border-slate-200 p-4 rounded-xl focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 transition outline-none font-bold" placeholder="例：東京都杉並区" /></div>
-      <div><label className="block text-sm font-bold text-slate-700 mb-2">教えたいこと・得意分野 <span className="text-red-500">*</span></label><textarea className="w-full border-2 border-slate-200 p-4 rounded-xl h-40 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 transition outline-none font-bold resize-none" placeholder="例：50年間続けてきた漬物作りのコツや、着物のリメイク方法などを教えられます。"></textarea></div>
-      <button className="w-full bg-gradient-to-r from-teal-500 to-emerald-600 text-white font-bold text-lg py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition transform" onClick={() => alert('応募を受け付けました！担当者よりご連絡いたします。')}>応募する（無料）</button>
+export const BecomeInstructorPage = () => {
+  const handleInteraction = () => {
+    alert("現在、準備中です。");
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto p-8 bg-white my-12 rounded-3xl shadow-lg border border-slate-100 font-sans animate-in slide-in-from-bottom-4">
+      <div className="text-center mb-8"><h2 className="text-3xl font-bold text-slate-800 mb-2">講師になる</h2><p className="text-slate-500">あなたの知恵と技を、次の世代へ繋ぎませんか？</p></div>
+      <div className="space-y-6">
+        <div>
+          <label className="block text-sm font-bold text-slate-700 mb-2">お名前 <span className="text-red-500">*</span></label>
+          <input 
+            className="w-full border-2 border-slate-200 p-4 rounded-xl focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 transition outline-none font-bold" 
+            placeholder="例：山田 花子" 
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-bold text-slate-700 mb-2">活動地域 <span className="text-red-500">*</span></label>
+          <input 
+            className="w-full border-2 border-slate-200 p-4 rounded-xl focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 transition outline-none font-bold" 
+            placeholder="例：東京都杉並区" 
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-bold text-slate-700 mb-2">教えたいこと・得意分野 <span className="text-red-500">*</span></label>
+          <textarea 
+            className="w-full border-2 border-slate-200 p-4 rounded-xl h-40 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 transition outline-none font-bold resize-none" 
+            placeholder="例：50年間続けてきた漬物作りのコツや、着物のリメイク方法などを教えられます。"
+          ></textarea>
+        </div>
+        <button 
+          className="w-full bg-slate-300 text-slate-500 font-bold text-lg py-4 rounded-xl cursor-pointer hover:bg-slate-400 transition transform" 
+          onClick={handleInteraction}
+        >
+          応募する（無料）
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const RegisterPage = ({ setView }: any) => (
   <div className="max-w-md mx-auto p-10 bg-white my-16 rounded-3xl shadow-2xl border border-slate-100 text-center font-sans animate-in zoom-in-95">
@@ -113,7 +142,7 @@ export const PrivacyPage = () => (
       <p>ちぃくり（以下、「当サービス」といいます。）は、本ウェブサイト上で提供するサービスにおける、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。</p>
       <h3 className="text-lg font-bold text-slate-800 mt-6">第1条（個人情報）</h3>
       <p>「個人情報」とは、個人情報保護法にいう「個人情報」を指すものとし、生存する個人に関する情報であって、当該情報に含まれる氏名、生年月日、住所、電話番号、連絡先その他の記述等により特定の個人を識別できる情報を指します。</p>
-      <p className="text-sm text-slate-400 mt-8 bg-slate-50 p-4 rounded-lg">※ サンプルテキストです。</p>
+      <p className="text-sm text-slate-400 mt-8 bg-slate-50 p-4 rounded-lg">※ これはサンプルテキストです。実際の運用に合わせて適切な内容に変更してください。</p>
     </div>
   </div>
 );
