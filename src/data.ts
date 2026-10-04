@@ -1,9 +1,10 @@
 // src/data.ts
+import type { Instructor, Video } from './types';
 
 export const categories = ["郷土料理", "伝統工芸", "健康・暮らし"];
 
 // 講師データ (上手くいっていた顔画像)
-export const instructorsData: any = {
+export const instructorsData: Record<string, Instructor> = {
   "田中 節子": { name: "田中 節子", title: "福井の郷土料理研究家", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&q=80" },
   "佐藤 ヨネ": { name: "佐藤 ヨネ", title: "信州の食文化伝承者", image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=150&q=80" },
   "山本 健一": { name: "山本 健一", title: "竹細工職人・歴40年", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80" },
@@ -16,7 +17,7 @@ export const instructorsData: any = {
 };
 
 // 動画データ (リンク切れしない定番の日本風景写真に変更)
-export const allVideosData = [
+export const allVideosData: Video[] = [
   // 郷土料理
   { 
     id: 101, category: "郷土料理", title: "鯖のへしこ：秋の仕込み 完全密着", instructor: "田中 節子", location: "福井県敦賀市", date: "2026.02.15", 

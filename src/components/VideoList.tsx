@@ -1,7 +1,14 @@
 import { LayoutGrid, ChevronRight, Lock, Play, MapPin, Calendar, Heart } from 'lucide-react';
 import { categories, allVideosData, instructorsData } from '../data';
+import type { ToggleLike, Video } from '../types';
 
-export const VideoList = ({ setPlayingVideo, toggleLike, likedVideos }: any) => {
+interface VideoListProps {
+  setPlayingVideo: (video: Video) => void;
+  toggleLike: ToggleLike;
+  likedVideos: number[];
+}
+
+export const VideoList = ({ setPlayingVideo, toggleLike, likedVideos }: VideoListProps) => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-16 space-y-20">
       {categories.map(cat => (
@@ -16,7 +23,7 @@ export const VideoList = ({ setPlayingVideo, toggleLike, likedVideos }: any) => 
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {allVideosData.filter(v => v.category === cat).map(v => {
-              const instructor = instructorsData[v.instructor as keyof typeof instructorsData];
+              const instructor = instructorsData[v.instructor];
               return (
                 <div key={v.id} onClick={() => { setPlayingVideo(v); }} className="group bg-white rounded-2xl border border-slate-100 overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                   <div className="aspect-video bg-slate-200 relative overflow-hidden">

@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { MapPin, Map as MapIcon } from 'lucide-react';
 import { JapanMap } from './JapanMap';
 import { allVideosData } from '../data';
+import type { Video } from '../types';
 
-export const MapPage = ({ setPlayingVideo }: any) => {
-  const [selectedPrefVideos, setSelectedPrefVideos] = useState<any[]>([]);
+export const MapPage = ({ setPlayingVideo }: { setPlayingVideo: (video: Video) => void }) => {
+  const [selectedPrefVideos, setSelectedPrefVideos] = useState<Video[]>([]);
 
   return (
     <div className="h-[calc(100vh-64px)] flex flex-col md:flex-row font-sans">

@@ -1,78 +1,36 @@
-import { useState, useEffect } from 'react';
-import { ExternalLink, LogOut } from 'lucide-react';
+import { useState } from 'react';
+import { ExternalLink } from 'lucide-react';
 import { Header } from './components/Navigation';
 import { BecomeInstructorPage, RegisterPage, PrivacyPage, MyPage } from './components/Pages';
 import { VideoPlayer } from './components/VideoPlayer';
-import { LoginModal } from './components/Auth';
+import { ComingSoonModal } from './components/ComingSoonModal';
 import { Hero } from './components/Hero';
 import { VideoList } from './components/VideoList';
 import { MapPage } from './components/MapPage';
-// ★ import { ... } from './data'; の行を削除しました
+import type { UserInfo, Video, View } from './types';
 
 export default function ChiikuriApp() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [view, setView] = useState<'home' | 'map' | 'register' | 'become-instructor' | 'privacy' | 'mypage'>('home');
+  const [showNotice, setShowNotice] = useState(false);
+  const [view, setView] = useState<View>('home');
   
-  const [userInfo, setUserInfo] = useState({
+  const [userInfo, setUserInfo] = useState<UserInfo>({
     name: "ちぃくり 太郎",
     region: "東京都杉並区",
     icon: "https://placehold.co/150x150/0d9488/ffffff?text=User",
-    followedInstructors: [] as string[]
+    followedInstructors: []
   });
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [notifications, setNotifications] = useState(true);
-  const [playingVideo, setPlayingVideoState] = useState<any>(null);
+  const [playingVideo, setPlayingVideo] = useState<Video | null>(null);
   const [likedVideos, setLikedVideos] = useState<number[]>([]);
 
-  // --- 認証ロジック ---
-  useEffect(() => {
-    const savedAuth = localStorage.getItem('chiicri_auth');
-    if (savedAuth) {
-      try {
-        const { timestamp } = JSON.parse(savedAuth);
-        if (new Date().getTime() - timestamp < 24 * 60 * 60 * 1000) {
-          setIsAuthenticated(true);
-        } else {
-          localStorage.removeItem('chiicri_auth');
-        }
-      } catch (e) {
-        localStorage.removeItem('chiicri_auth');
-      }
-    }
-  }, []);
-
-  const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
-    localStorage.setItem('chiicri_auth', JSON.stringify({ timestamp: new Date().getTime() }));
-    setShowLoginModal(false);
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('chiicri_auth');
-    alert("ログアウトしました。機能制限が有効になります。");
-    setView('home');
-  };
-
-  const handleRequireAuth = () => {
-    if (!isAuthenticated) {
-      setShowLoginModal(true);
-    }
-  };
+  // --- 未実装機能の案内 ---
+  const showComingSoon = () => setShowNotice(true);
 
   // --- アクション制御 ---
-  const setPlayingVideo = (video: any) => {
-    setPlayingVideoState(video);
-  };
-
   const toggleLike = (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
-    if (!isAuthenticated) {
-      setShowLoginModal(true);
-      return;
-    }
     setLikedVideos(prev => prev.includes(id) ? prev.filter(v => v !== id) : [...prev, id]);
   };
 
@@ -80,12 +38,7 @@ export default function ChiikuriApp() {
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans relative">
       <Header setView={setView} setIsMenuOpen={setIsMenuOpen} isMenuOpen={isMenuOpen} notifications={notifications} setNotifications={setNotifications} />
       
-      {showLoginModal && (
-        <LoginModal 
-          onClose={() => setShowLoginModal(false)} 
-          onLogin={handleLoginSuccess} 
-        />
-      )}
+      {showNotice && <ComingSoonModal onClose={() => setShowNotice(false)} />}
 
       {playingVideo && (
         <VideoPlayer 
@@ -93,15 +46,14 @@ export default function ChiikuriApp() {
           onClose={() => setPlayingVideo(null)} 
           likedVideos={likedVideos} 
           toggleLike={toggleLike} 
-          setView={setView}
-          onRequireAuth={handleRequireAuth} 
+          onComingSoon={showComingSoon}
         />
       )}
 
       <main className="flex-grow">
         {view === 'home' && (
           <>
-            <Hero onRequireAuth={handleRequireAuth} />
+            <Hero onComingSoon={showComingSoon} />
             <VideoList 
               setPlayingVideo={setPlayingVideo}
               toggleLike={toggleLike}
@@ -114,7 +66,7 @@ export default function ChiikuriApp() {
         
         {view === 'mypage' && <MyPage userInfo={userInfo} setUserInfo={setUserInfo} likedVideos={likedVideos} toggleLike={toggleLike} setView={setView} setPlayingVideo={setPlayingVideo} />}
         
-        {view === 'register' && <RegisterPage setView={setView} onRequireAuth={handleRequireAuth} />}
+        {view === 'register' && <RegisterPage setView={setView} onComingSoon={showComingSoon} />}
         
         {view === 'become-instructor' && <BecomeInstructorPage />}
         {view === 'privacy' && <PrivacyPage />}
@@ -127,11 +79,6 @@ export default function ChiikuriApp() {
             <button onClick={() => setView('privacy')} className="hover:text-teal-600 transition">プライバシーポリシー</button>
             <a href="https://happiino.com/about" target="_blank" rel="noreferrer" className="hover:text-teal-600 transition flex items-center gap-1">運営会社: 合同会社Happiino <ExternalLink size={14}/></a>
             <a href="#" className="hover:text-teal-600 transition">お問い合わせ</a>
-            {isAuthenticated && (
-              <button onClick={handleLogout} className="text-red-400 hover:text-red-600 transition flex items-center gap-1">
-                <LogOut size={14} /> ログアウト
-              </button>
-            )}
           </div>
           <p className="text-xs text-slate-400">© 2026 Happiino LLC. All rights reserved.</p>
         </div>

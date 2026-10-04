@@ -1,6 +1,15 @@
+import type { View } from '../types';
 import { Menu, X, Bell, LayoutGrid, Map as MapIcon, Users, User } from 'lucide-react';
 
-export const Header = ({ setView, setIsMenuOpen, isMenuOpen, notifications, setNotifications }: any) => (
+interface HeaderProps {
+  setView: (view: View) => void;
+  setIsMenuOpen: (open: boolean) => void;
+  isMenuOpen: boolean;
+  notifications: boolean;
+  setNotifications: (on: boolean) => void;
+}
+
+export const Header = ({ setView, setIsMenuOpen, isMenuOpen, notifications, setNotifications }: HeaderProps) => (
   <>
     <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm h-16 flex items-center px-4 justify-between font-sans relative">
       <div className="flex items-center gap-2 cursor-pointer group" onClick={() => setView('home')}>

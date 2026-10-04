@@ -3,8 +3,8 @@ import { MapPin, MousePointer2, ZoomIn, ZoomOut } from 'lucide-react';
 import { MAP_PATHS } from '../MapData';
 import { allVideosData } from '../data';
 
-export const JapanMap = ({ onSelectPrefecture }: any) => {
-  const activePrefs = Array.from(new Set(allVideosData.map((v: any) => v.location.substring(0, 2))));
+export const JapanMap = ({ onSelectPrefecture }: { onSelectPrefecture: (pref: string) => void }) => {
+  const activePrefs = Array.from(new Set(allVideosData.map(v => v.location.substring(0, 2))));
   
   // --- 状態管理 ---
   const [offset, setOffset] = useState({ x: 0, y: 0 }); // 地図の位置
@@ -93,7 +93,7 @@ export const JapanMap = ({ onSelectPrefecture }: any) => {
   };
 
   // 5. クリック処理
-  const handlePrefClick = (prefName: string, e: any) => {
+  const handlePrefClick = (prefName: string, e: React.SyntheticEvent) => {
     if (!isClick.current) return;
     e.stopPropagation();
     onSelectPrefecture(prefName);
@@ -138,7 +138,7 @@ export const JapanMap = ({ onSelectPrefecture }: any) => {
                   onClick={(e) => isActive && handlePrefClick(pref.name.substring(0, 2), e)}
                   onTouchEnd={(e) => isActive && handlePrefClick(pref.name.substring(0, 2), e)}
                   className={`transition-colors duration-300 ${isActive ? 'cursor-pointer hover:opacity-80' : 'fill-white stroke-slate-300'}`}
-                  transform={(pref as any).transform}
+                  transform={pref.transform}
                 >
                   <path d={pref.d} fill={isActive ? "#ccfbf1" : "#ffffff"} stroke="#64748b" strokeWidth={1 / scale} /> 
                   

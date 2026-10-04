@@ -1,14 +1,25 @@
 import { useState, useRef, useEffect } from 'react';
-import { MapPin, Edit2, Check, XCircle, Plus, Video, Users, Heart, Lock, Calendar } from 'lucide-react';
+import { MapPin, Edit2, Check, XCircle, Plus, Video as VideoIcon, Users, Heart, Lock, Calendar } from 'lucide-react';
+import { allVideosData } from '../data';
+import type { ToggleLike, UserInfo, Video, View } from '../types';
 
-// --- マイページ (変更なし) ---
-export const MyPage = ({ userInfo, setUserInfo, allVideosData, likedVideos, toggleLike, setView, setPlayingVideo }: any) => {
+// --- マイページ ---
+interface MyPageProps {
+  userInfo: UserInfo;
+  setUserInfo: React.Dispatch<React.SetStateAction<UserInfo>>;
+  likedVideos: number[];
+  toggleLike: ToggleLike;
+  setView: (view: View) => void;
+  setPlayingVideo: (video: Video) => void;
+}
+
+export const MyPage = ({ userInfo, setUserInfo, likedVideos, toggleLike, setView, setPlayingVideo }: MyPageProps) => {
   const [activeTab, setActiveTab] = useState<'videos' | 'instructors'>('videos');
   const [editingField, setEditingField] = useState<string | null>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { if (editingField && editInputRef.current) editInputRef.current.focus(); }, [editingField]);
-  const saveEdit = (field: string, value: string) => { setUserInfo((prev:any) => ({ ...prev, [field]: value })); setEditingField(null); };
+  const saveEdit = (field: string, value: string) => { setUserInfo(prev => ({ ...prev, [field]: value })); setEditingField(null); };
 
   return (
     <div className="max-w-4xl mx-auto p-4 py-8 space-y-8 animate-in fade-in font-sans">
@@ -48,13 +59,13 @@ export const MyPage = ({ userInfo, setUserInfo, allVideosData, likedVideos, togg
       
       <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="flex border-b border-slate-100">
-          <button onClick={() => setActiveTab('videos')} className={`flex-1 py-5 text-center font-bold flex items-center justify-center gap-2 transition relative ${activeTab === 'videos' ? 'text-teal-600 bg-teal-50/50' : 'text-slate-500 hover:bg-slate-50'}`}><Video size={20} /> お気に入り動画 {activeTab === 'videos' && <span className="absolute bottom-0 left-0 w-full h-1 bg-teal-500 animate-in slide-in-from-left"></span>}</button>
+          <button onClick={() => setActiveTab('videos')} className={`flex-1 py-5 text-center font-bold flex items-center justify-center gap-2 transition relative ${activeTab === 'videos' ? 'text-teal-600 bg-teal-50/50' : 'text-slate-500 hover:bg-slate-50'}`}><VideoIcon size={20} /> お気に入り動画 {activeTab === 'videos' && <span className="absolute bottom-0 left-0 w-full h-1 bg-teal-500 animate-in slide-in-from-left"></span>}</button>
           <button onClick={() => setActiveTab('instructors')} className={`flex-1 py-5 text-center font-bold flex items-center justify-center gap-2 transition relative ${activeTab === 'instructors' ? 'text-teal-600 bg-teal-50/50' : 'text-slate-500 hover:bg-slate-50'}`}><Users size={20} /> フォロー中の講師 {activeTab === 'instructors' && <span className="absolute bottom-0 left-0 w-full h-1 bg-teal-500 animate-in slide-in-from-right"></span>}</button>
         </div>
         <div className="p-6 md:p-8 bg-slate-50/30 min-h-[300px]">
           {activeTab === 'videos' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in">
-              {likedVideos.length > 0 ? allVideosData.filter((v:any) => likedVideos.includes(v.id)).map((v:any) => (
+              {likedVideos.length > 0 ? allVideosData.filter(v => likedVideos.includes(v.id)).map(v => (
                 <div key={v.id} className="group bg-white rounded-xl border border-slate-200 overflow-hidden cursor-pointer hover:shadow-md transition flex" onClick={() => { setView('home'); setPlayingVideo(v); window.scrollTo(0,0); }}>
                   <div className="w-32 h-full relative shrink-0">
                     <img src={v.image} className="w-full h-full object-cover" alt={v.title} />
@@ -79,7 +90,7 @@ export const MyPage = ({ userInfo, setUserInfo, allVideosData, likedVideos, togg
   );
 };
 
-// --- 講師応募ページ (変更なし) ---
+// --- 講師応募ページ ---
 export const BecomeInstructorPage = () => {
   const handleInteraction = () => {
     alert("現在、準備中です。");
@@ -98,22 +109,21 @@ export const BecomeInstructorPage = () => {
   );
 };
 
-// --- 会員登録ページ (修正版) ---
-// ★ onRequireAuth を受け取る
-export const RegisterPage = ({ setView, onRequireAuth }: any) => (
+// --- 会員登録ページ ---
+export const RegisterPage = ({ setView, onComingSoon }: { setView: (view: View) => void; onComingSoon: () => void }) => (
   <div className="max-w-md mx-auto p-10 bg-white my-16 rounded-3xl shadow-2xl border border-slate-100 text-center font-sans animate-in zoom-in-95">
     <img src="/chiicri_logo.png" alt="ちぃくり" className="h-12 mx-auto mb-6" />
     <h2 className="text-2xl font-bold mb-2 text-slate-800">新規会員登録</h2>
     <p className="text-slate-500 mb-8 text-sm">地域の魅力的な動画が見放題になります。</p>
     <div className="space-y-4">
       <button 
-        onClick={onRequireAuth} // ★ここ
+        onClick={onComingSoon}
         className="w-full bg-[#1877f2] text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-3 hover:bg-[#0d65d9] transition shadow-sm"
       >
         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Facebookで登録
       </button>
       <button 
-        onClick={onRequireAuth} // ★ここ
+        onClick={onComingSoon}
         className="w-full bg-slate-800 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-3 hover:bg-slate-900 transition shadow-sm"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg> メールアドレスで登録

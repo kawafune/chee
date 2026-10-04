@@ -1,10 +1,16 @@
 import { X, Lock, Play, Clock, Calendar, MapPin, Heart, Share2, ExternalLink } from 'lucide-react';
 import { instructorsData } from '../data';
+import type { ToggleLike, Video } from '../types';
 
-// ▼ 修正箇所: setView を削除しました
-export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, onRequireAuth }: any) => {
-  if (!video) return null;
+interface VideoPlayerProps {
+  video: Video;
+  onClose: () => void;
+  likedVideos: number[];
+  toggleLike: ToggleLike;
+  onComingSoon: () => void;
+}
 
+export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, onComingSoon }: VideoPlayerProps) => {
   const instructor = instructorsData[video.instructor];
 
   return (
@@ -33,7 +39,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, onRequire
                 月額会員になると、{video.instructor}先生のすべての動画が見放題になります。
               </p>
               <button 
-                onClick={onRequireAuth} 
+                onClick={onComingSoon} 
                 className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white text-sm md:text-xl font-bold px-6 py-2 md:px-10 md:py-4 rounded-full shadow-lg hover:scale-105 transition transform"
               >
                 今すぐ無料体験を始める
@@ -41,7 +47,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, onRequire
             </div>
           ) : (
             <div 
-              onClick={onRequireAuth} 
+              onClick={onComingSoon} 
               className="absolute inset-0 flex items-center justify-center group cursor-pointer"
             >
               <div className="w-16 h-16 md:w-24 md:h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md group-hover:scale-110 transition duration-300 border-2 border-white/50">
@@ -79,7 +85,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, onRequire
                 {likedVideos.includes(video.id) ? 'お気に入り済み' : 'お気に入り'}
               </button>
               <button 
-                onClick={onRequireAuth} 
+                onClick={onComingSoon} 
                 className="flex-1 py-3 rounded-xl font-bold flex items-center justify-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700 transition"
               >
                 <Share2 size={20} /> シェアする
@@ -90,7 +96,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, onRequire
           <div className="space-y-6">
             <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
               <div className="flex items-center gap-4 mb-4">
-                <img src={instructor?.image} className="w-16 h-16 rounded-full border-2 border-slate-600" />
+                <img src={instructor?.image} className="w-16 h-16 rounded-full border-2 border-slate-600" alt={video.instructor} />
                 <div>
                   <div className="text-xs text-teal-400 font-bold mb-1">INSTRUCTOR</div>
                   <h3 className="font-bold text-lg text-white">{video.instructor}</h3>
@@ -98,7 +104,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, onRequire
                 </div>
               </div>
               <button 
-                onClick={() => { onClose(); onRequireAuth(); }} 
+                onClick={() => { onClose(); onComingSoon(); }} 
                 className="w-full bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg text-sm font-bold transition"
               >
                 プロフィールを見る
@@ -109,7 +115,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, onRequire
               <h3 className="font-bold text-lg mb-2 text-white">教室に行ってみる？</h3>
               <p className="text-teal-200 text-sm mb-4">動画の先生から直接習うことができます。体験予約はこちらから。</p>
               <button 
-                onClick={onRequireAuth} 
+                onClick={onComingSoon} 
                 className="w-full bg-white text-teal-900 font-bold py-3 rounded-xl hover:bg-teal-50 transition flex items-center justify-center gap-2"
               >
                 <ExternalLink size={18} /> 教室を予約する
