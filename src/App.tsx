@@ -8,6 +8,7 @@ import { Hero } from './components/Hero';
 import { VideoList } from './components/VideoList';
 import { MapPage } from './components/MapPage';
 import type { UserInfo, Video, View } from './types';
+import { LOGO_URL } from './lib/assets';
 
 export default function ChiikuriApp() {
   const [showNotice, setShowNotice] = useState(false);
@@ -74,7 +75,7 @@ export default function ChiikuriApp() {
 
       <footer className="bg-slate-50 border-t border-slate-200 p-12 text-center font-sans">
         <div className="max-w-7xl mx-auto space-y-8">
-          <img src="/chiicri_logo.png" alt="ちぃくり" className="h-10 mx-auto opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition" />
+          <img src={LOGO_URL} alt="ちぃくり" className="h-10 mx-auto opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition" />
           <div className="flex flex-wrap justify-center gap-8 text-sm font-bold text-slate-600">
             <button onClick={() => setView('privacy')} className="hover:text-teal-600 transition">プライバシーポリシー</button>
             <a href="https://happiino.com/about" target="_blank" rel="noreferrer" className="hover:text-teal-600 transition flex items-center gap-1">運営会社: 合同会社Happiino <ExternalLink size={14}/></a>

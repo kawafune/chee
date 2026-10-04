@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { MapPin, Edit2, Check, XCircle, Plus, Video as VideoIcon, Users, Heart, Lock, Calendar, X } from 'lucide-react';
 import { allVideosData } from '../data';
 import type { ToggleLike, UserInfo, Video, View } from '../types';
+import { LOGO_URL } from '../lib/assets';
 
 // --- マイページ ---
 interface MyPageProps {
@@ -68,7 +69,7 @@ export const MyPage = ({ userInfo, setUserInfo, likedVideos, toggleLike, setView
               {likedVideos.length > 0 ? allVideosData.filter(v => likedVideos.includes(v.id)).map(v => (
                 <div key={v.id} className="group bg-white rounded-xl border border-slate-200 overflow-hidden cursor-pointer hover:shadow-md transition flex" onClick={() => { setView('home'); setPlayingVideo(v); window.scrollTo(0,0); }}>
                   <div className="w-32 h-full relative shrink-0">
-                    <img src={v.image} className="w-full h-full object-cover" alt={v.title} />
+                    <img src={v.image} loading="lazy" decoding="async" className="w-full h-full object-cover" alt={v.title} />
                     {v.isPremium && <div className="absolute top-1 left-1 bg-slate-900/60 p-1 rounded-full"><Lock size={12} className="text-yellow-400"/></div>}
                   </div>
                   <div className="p-4 flex-1 flex flex-col justify-between">
@@ -115,7 +116,7 @@ export const RegisterPage = ({ setView, onComingSoon }: { setView: (view: View) 
     <button onClick={() => setView('home')} aria-label="閉じてホームに戻る" className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition">
       <X size={24} />
     </button>
-    <img src="/chiicri_logo.png" alt="ちぃくり" className="h-12 mx-auto mb-6" />
+    <img src={LOGO_URL} alt="ちぃくり" className="h-12 mx-auto mb-6" />
     <h2 className="text-2xl font-bold mb-2 text-slate-800">新規会員登録</h2>
     <p className="text-slate-500 mb-8 text-sm">地域の魅力的な動画が見放題になります。</p>
     <div className="space-y-4">

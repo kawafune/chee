@@ -27,7 +27,7 @@ export const VideoList = ({ setPlayingVideo, toggleLike, likedVideos }: VideoLis
               return (
                 <div key={v.id} onClick={() => { setPlayingVideo(v); }} className="group bg-white rounded-2xl border border-slate-100 overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                   <div className="aspect-video bg-slate-200 relative overflow-hidden">
-                    <img src={v.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={v.title} />
+                    <img src={v.image} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={v.title} />
                     {v.isPremium && <div className="absolute top-3 right-3 bg-slate-900/60 backdrop-blur-sm p-1.5 rounded-full"><Lock size={16} className="text-yellow-400" /></div>}
                     <span className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-bold flex items-center gap-1"><Play size={10} fill="currentColor"/>{v.duration}</span>
                   </div>
@@ -35,7 +35,7 @@ export const VideoList = ({ setPlayingVideo, toggleLike, likedVideos }: VideoLis
                     <h3 className="font-bold text-lg text-slate-800 line-clamp-2 leading-snug group-hover:text-teal-700 transition">{v.title}</h3>
                     <div className="flex items-center justify-between pt-2">
                       <div className="flex items-center gap-2 text-sm font-bold text-slate-600">
-                        <img src={instructor?.image || "/api/placeholder/32/32"} className="w-8 h-8 rounded-full border-2 border-white shadow-sm" alt={v.instructor}/>
+                        <img src={instructor?.image} loading="lazy" decoding="async" className="w-8 h-8 rounded-full border-2 border-white shadow-sm" alt={v.instructor}/>
                         <span>{v.instructor}</span>
                       </div>
                       <button onClick={(e) => toggleLike(e, v.id)} className="text-slate-300 hover:text-pink-500 transition hover:scale-110">

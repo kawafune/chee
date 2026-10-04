@@ -1,5 +1,6 @@
 import type { View } from '../types';
 import { Menu, X, Bell, LayoutGrid, Map as MapIcon, Users, User } from 'lucide-react';
+import { LOGO_URL } from '../lib/assets';
 
 interface HeaderProps {
   setView: (view: View) => void;
@@ -13,7 +14,7 @@ export const Header = ({ setView, setIsMenuOpen, isMenuOpen, notifications, setN
   <>
     <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm h-16 flex items-center px-4 justify-between font-sans relative">
       <div className="flex items-center gap-2 cursor-pointer group" onClick={() => setView('home')}>
-        <img src="/chiicri_logo.png" alt="ちぃくり" className="h-8 md:h-10 object-contain group-hover:opacity-80 transition" />
+        <img src={LOGO_URL} alt="ちぃくり" className="h-8 md:h-10 object-contain group-hover:opacity-80 transition" />
       </div>
       
       {/* PC用ナビゲーション */}

@@ -24,7 +24,7 @@ export const MapPage = ({ setPlayingVideo }: { setPlayingVideo: (video: Video) =
             <div className="flex justify-between items-center border-b pb-2"><h3 className="font-bold text-lg">{selectedPrefVideos[0].location.substring(0,2)}の教室</h3><button onClick={()=>setSelectedPrefVideos([])} className="text-xs text-slate-400">クリア</button></div>
             {selectedPrefVideos.map(v => (
             <div key={v.id} className="group flex gap-3 cursor-pointer hover:bg-slate-50 p-2 rounded-lg transition" onClick={() => { setPlayingVideo(v); }}>
-              <img src={v.image} className="w-20 h-14 rounded-lg object-cover group-hover:shadow-md transition" alt={v.title} />
+              <img src={v.image} loading="lazy" decoding="async" className="w-20 h-14 rounded-lg object-cover group-hover:shadow-md transition" alt={v.title} />
               <div><p className="text-sm font-bold line-clamp-2 group-hover:text-teal-700 transition">{v.title}</p><p className="text-xs text-slate-500 mt-1">{v.instructor}</p></div>
             </div>
           ))}</div>

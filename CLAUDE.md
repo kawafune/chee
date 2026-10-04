@@ -24,10 +24,15 @@ npm run preview  # ビルド結果の確認
 ## 構成
 ```
 index.html              メタ情報・OGP・Googleアナリティクス・Search Console確認タグ
-public/                 静的ファイル（ロゴ、動画サムネ画像、ogp.png 1200x630）
+public/                 配信される静的ファイル
+  favicon.svg, ogp.png    URLを固定したいので直下に置く
+  images/<種類>/          配信用の軽量画像（WebP）。brand / videos など。自動生成物
+assets-src/images/<種類>/ 画像の元データ（jpg/png）。配信されない。ここが原本
+scripts/optimize-images.mjs  元画像→public/images のWebP変換（npm run images）
 src/
   App.tsx               全体の状態管理。画面切替は view ステート（ルーターは使っていない）
   types.ts              共通の型（Video / Instructor / UserInfo / View / MapPath）
+  lib/assets.ts         画像URLの組み立て（imageUrl / LOGO_URL）。配信元の切替口
   data.ts               カテゴリ・講師・動画のデータ
   MapData.ts            日本地図のSVGパス（47都道府県）
   components/
@@ -43,7 +48,13 @@ src/
 ## 開発方針
 - 日本語UI。コメントも日本語で書く。
 - 型は `src/types.ts` に集約し、`any` は使わない。propsには必ず型を付ける。
-- 動画を追加するときは `src/data.ts` の `allVideosData` に `Video` 型で足す。画像は `public/` に置いて `/ファイル名.jpg` で参照する（外部画像URLはリンク切れしやすいので避ける）。
+- 動画を追加するときは `src/data.ts` の `allVideosData` に `Video` 型で足す。
+- 画像の追加手順: ①元画像を `assets-src/images/<種類>/` に置く → ②`npm run images` → ③`imageUrl("<種類>/<名前>.webp")` で参照する。`public/images/` は直接編集しない。
+- 画像のURLは必ず `imageUrl()` / `LOGO_URL` を通す（将来CDNへ移すときに `VITE_ASSET_BASE_URL` だけで切り替えられるようにするため）。
+- 一覧・サムネ等のimgには `loading="lazy" decoding="async"` を付ける。
+- 外部画像URL（Unsplash等）はリンク切れしやすいので避ける。現状 `data.ts` の講師アイコンと一部の動画サムネが外部URLのまま（要置き換え）。
+- **動画ファイル（mp4等）はこのリポジトリに入れない。** Gitが肥大化し、Vercelの容量制限にも当たる。動画は外部の動画配信サービスに置き、データにはURL/IDだけを持たせる（選定は動画再生の実装時）。
+- 画像が数百枚規模になったら、`public/` から外部ストレージ（Supabase Storage / Cloudflare R2 / Cloudinary 等）へ移し、`VITE_ASSET_BASE_URL` を設定する。
 - 地図のピンは動画の `location` の先頭2文字（都道府県名）と `MapData.ts` の `name` の前方一致で決まる。`location` は「福井県…」のように都道府県から書く。
 - Tailwindのクラスで直接スタイルする（独自CSSは `src/index.css` の最小限のみ）。
 - 本物の認証を入れる場合、認証情報（ID/パスワード/APIキー）をソースに書かない。環境変数かBaaS（Supabase / Firebase Auth 等）を使う。
@@ -54,7 +65,8 @@ src/
 3. 会員登録（最後。認証方式は実装時に選定）
 
 ## デプロイ
-GitHubへのpushでVercelが自動デプロイする。本番URLに反映されるのは本番ブランチ（`main` の想定。Vercelの Settings > Git > Production Branch で確認）へのpush/マージのみ。それ以外のブランチはプレビューURLになる。
+GitHubへのpushでVercelが自動デプロイする。本番URLに反映されるのは `main` へのpushのみ（確認済み）。それ以外のブランチはプレビューURLになる。
+現在は開発者がオーナー1人のため **`main` に直接pushしてよい**（オーナーの許可済み）。他の人が関わる合図があったら、ブランチ＋PR運用に切り替える。
 
 ## 公開前のTODO（確認事項）
 - 独自ドメインを決めたら `index.html` の canonical / `og:url` / `og:image` / `twitter:image` を差し替える。
