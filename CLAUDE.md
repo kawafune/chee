@@ -49,6 +49,7 @@ src/
 - 日本語UI。コメントも日本語で書く。
 - 型は `src/types.ts` に集約し、`any` は使わない。propsには必ず型を付ける。
 - 動画を追加するときは `src/data.ts` の `allVideosData` に `Video` 型で足す。
+- 元画像（`assets-src/`）は長辺1600px程度・JPEG品質80前後に縮小してからコミットする。表示は最大でも幅800px程度（高解像度画面で2倍でも1600px）なので画質は足りる。Gitは履歴に全バージョンが残り続けるため、数MBの原寸写真を大量に入れない。原寸データはGoogle Driveなど別の場所に保管する。
 - 画像の追加手順: ①元画像を `assets-src/images/<種類>/` に置く → ②`npm run images` → ③`imageUrl("<種類>/<名前>.webp")` で参照する。`public/images/` は直接編集しない。
 - 画像のURLは必ず `imageUrl()` / `LOGO_URL` を通す（将来CDNへ移すときに `VITE_ASSET_BASE_URL` だけで切り替えられるようにするため）。
 - 一覧・サムネ等のimgには `loading="lazy" decoding="async"` を付ける。

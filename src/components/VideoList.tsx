@@ -35,7 +35,7 @@ export const VideoList = ({ setPlayingVideo, toggleLike, likedVideos }: VideoLis
                     <h3 className="font-bold text-lg text-slate-800 line-clamp-2 leading-snug group-hover:text-teal-700 transition">{v.title}</h3>
                     <div className="flex items-center justify-between pt-2">
                       <div className="flex items-center gap-2 text-sm font-bold text-slate-600">
-                        <img src={instructor?.image} loading="lazy" decoding="async" className="w-8 h-8 rounded-full border-2 border-white shadow-sm" alt={v.instructor}/>
+                        <img src={instructor?.image} loading="lazy" decoding="async" className="w-8 h-8 shrink-0 rounded-full object-cover object-top border-2 border-white shadow-sm" alt={v.instructor}/>
                         <span>{v.instructor}</span>
                       </div>
                       <button onClick={(e) => toggleLike(e, v.id)} className="text-slate-300 hover:text-pink-500 transition hover:scale-110">

@@ -96,7 +96,7 @@ export const VideoPlayer = ({ video, onClose, likedVideos, toggleLike, onComingS
           <div className="space-y-6">
             <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
               <div className="flex items-center gap-4 mb-4">
-                <img src={instructor?.image} className="w-16 h-16 rounded-full border-2 border-slate-600" alt={video.instructor} />
+                <img src={instructor?.image} className="w-16 h-16 shrink-0 rounded-full object-cover object-top border-2 border-slate-600" alt={video.instructor} />
                 <div>
                   <div className="text-xs text-teal-400 font-bold mb-1">INSTRUCTOR</div>
                   <h3 className="font-bold text-lg text-white">{video.instructor}</h3>
