@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { MapPin, Edit2, Check, XCircle, Plus, Video as VideoIcon, Users, Heart, Lock, Calendar } from 'lucide-react';
+import { MapPin, Edit2, Check, XCircle, Plus, Video as VideoIcon, Users, Heart, Lock, Calendar, X } from 'lucide-react';
 import { allVideosData } from '../data';
 import type { ToggleLike, UserInfo, Video, View } from '../types';
 
@@ -111,7 +111,10 @@ export const BecomeInstructorPage = () => {
 
 // --- 会員登録ページ ---
 export const RegisterPage = ({ setView, onComingSoon }: { setView: (view: View) => void; onComingSoon: () => void }) => (
-  <div className="max-w-md mx-auto p-10 bg-white my-16 rounded-3xl shadow-2xl border border-slate-100 text-center font-sans animate-in zoom-in-95">
+  <div className="max-w-md mx-auto p-10 bg-white my-16 rounded-3xl shadow-2xl border border-slate-100 text-center font-sans animate-in zoom-in-95 relative">
+    <button onClick={() => setView('home')} aria-label="閉じてホームに戻る" className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition">
+      <X size={24} />
+    </button>
     <img src="/chiicri_logo.png" alt="ちぃくり" className="h-12 mx-auto mb-6" />
     <h2 className="text-2xl font-bold mb-2 text-slate-800">新規会員登録</h2>
     <p className="text-slate-500 mb-8 text-sm">地域の魅力的な動画が見放題になります。</p>
@@ -129,6 +132,9 @@ export const RegisterPage = ({ setView, onComingSoon }: { setView: (view: View) 
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg> メールアドレスで登録
       </button>
     </div>
+    <button onClick={() => setView('home')} className="mt-6 text-sm text-slate-500 underline hover:text-teal-700 transition">
+      登録せずにホームに戻る
+    </button>
     <p className="text-xs text-slate-400 mt-8">登録することで、<button onClick={() => setView('privacy')} className="text-teal-600 underline hover:text-teal-800">プライバシーポリシー</button>に同意したものとみなします。</p>
   </div>
 );
@@ -136,11 +142,51 @@ export const RegisterPage = ({ setView, onComingSoon }: { setView: (view: View) 
 export const PrivacyPage = () => (
   <div className="max-w-3xl mx-auto p-8 my-8 bg-white rounded-2xl shadow-sm border border-slate-100 font-sans animate-in fade-in">
     <h2 className="text-2xl font-bold mb-6 pb-4 border-b">プライバシーポリシー</h2>
-    <div className="prose prose-slate text-slate-600 space-y-4 leading-relaxed">
-      <p>ちぃくり（以下、「当サービス」といいます。）は、本ウェブサイト上で提供するサービスにおける、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。</p>
+    <div className="text-slate-600 space-y-4 leading-relaxed">
+      <p>合同会社Happiino（以下、「当社」といいます。）は、当社が運営する「ちぃくり」（以下、「本サービス」といいます。）における、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。</p>
+
       <h3 className="text-lg font-bold text-slate-800 mt-6">第1条（個人情報）</h3>
-      <p>「個人情報」とは、個人情報保護法にいう「個人情報」を指すものとし、生存する個人に関する情報であって、当該情報に含まれる氏名、生年月日、住所、電話番号、連絡先その他の記述等により特定の個人を識別できる情報を指します。</p>
-      <p className="text-sm text-slate-400 mt-8 bg-slate-50 p-4 rounded-lg">※ これはサンプルテキストです。実際の運用に合わせて適切な内容に変更してください。</p>
+      <p>「個人情報」とは、個人情報保護法にいう「個人情報」を指すものとし、生存する個人に関する情報であって、当該情報に含まれる氏名、生年月日、住所、電話番号、メールアドレスその他の記述等により特定の個人を識別できる情報を指します。</p>
+
+      <h3 className="text-lg font-bold text-slate-800 mt-6">第2条（個人情報の収集方法）</h3>
+      <p>当社は、ユーザーが会員登録をする際や、講師への応募、教室の体験予約、お問い合わせの際に、氏名、居住地域、メールアドレスなどの個人情報をお尋ねすることがあります。</p>
+
+      <h3 className="text-lg font-bold text-slate-800 mt-6">第3条（個人情報を収集・利用する目的）</h3>
+      <p>当社が個人情報を収集・利用する目的は、以下のとおりです。</p>
+      <ul className="list-disc pl-6 space-y-1">
+        <li>本サービスの提供・運営のため</li>
+        <li>ユーザーからのお問い合わせに回答するため</li>
+        <li>講師・教室の体験予約に関する連絡のため</li>
+        <li>本サービスに関するお知らせや新機能のご案内のため</li>
+        <li>利用規約に違反したユーザーや、不正・不当な目的で利用しようとするユーザーの特定と、ご利用をお断りするため</li>
+        <li>本サービスの改善や、新しいサービスの開発のため</li>
+      </ul>
+
+      <h3 className="text-lg font-bold text-slate-800 mt-6">第4条（アクセス解析ツールの利用）</h3>
+      <p>本サービスでは、利用状況を把握するためにGoogle LLCが提供するアクセス解析ツール「Googleアナリティクス」を利用しています。Googleアナリティクスはトラフィックデータの収集のためにCookieを使用しており、このデータは匿名で収集され、個人を特定するものではありません。Cookieはブラウザの設定により無効にすることができます。詳細は、Googleアナリティクスの利用規約およびGoogleのプライバシーポリシーをご確認ください。</p>
+
+      <h3 className="text-lg font-bold text-slate-800 mt-6">第5条（個人情報の第三者提供）</h3>
+      <p>当社は、次に掲げる場合を除いて、あらかじめユーザーの同意を得ることなく、第三者に個人情報を提供することはありません。</p>
+      <ul className="list-disc pl-6 space-y-1">
+        <li>法令に基づく場合</li>
+        <li>人の生命、身体または財産の保護のために必要がある場合であって、本人の同意を得ることが困難であるとき</li>
+        <li>国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合</li>
+        <li>体験予約の際に、予約先の講師・教室へ連絡に必要な情報をお伝えする場合（ユーザーが予約を行った場合に限ります）</li>
+      </ul>
+
+      <h3 className="text-lg font-bold text-slate-800 mt-6">第6条（個人情報の開示・訂正・削除）</h3>
+      <p>ユーザーは、当社の保有する自己の個人情報について、開示・訂正・削除・利用停止を請求することができます。ご希望の場合は、下記のお問い合わせ窓口までご連絡ください。本人確認のうえ、法令に従い遅滞なく対応いたします。</p>
+
+      <h3 className="text-lg font-bold text-slate-800 mt-6">第7条（プライバシーポリシーの変更）</h3>
+      <p>本ポリシーの内容は、法令その他本ポリシーに別段の定めのある事項を除いて、ユーザーに通知することなく変更することができるものとします。変更後のプライバシーポリシーは、本ページに掲載したときから効力を生じるものとします。</p>
+
+      <h3 className="text-lg font-bold text-slate-800 mt-6">第8条（お問い合わせ窓口）</h3>
+      <p>本ポリシーに関するお問い合わせは、下記の窓口までお願いいたします。</p>
+      <p>
+        運営会社：合同会社Happiino<br />
+        サービス名：ちぃくり<br />
+        お問い合わせ：<a href="https://happiino.com/about" target="_blank" rel="noreferrer" className="text-teal-600 underline hover:text-teal-800">https://happiino.com/about</a>
+      </p>
     </div>
   </div>
 );

@@ -48,10 +48,17 @@ src/
 - Tailwindのクラスで直接スタイルする（独自CSSは `src/index.css` の最小限のみ）。
 - 本物の認証を入れる場合、認証情報（ID/パスワード/APIキー）をソースに書かない。環境変数かBaaS（Supabase / Firebase Auth 等）を使う。
 
+## 実装の優先順位
+1. 動画再生（`VideoPlayer`）
+2. 検索（`Hero` の検索欄）
+3. 会員登録（最後。認証方式は実装時に選定）
+
+## デプロイ
+GitHubへのpushでVercelが自動デプロイする。本番URLに反映されるのは本番ブランチ（`main` の想定。Vercelの Settings > Git > Production Branch で確認）へのpush/マージのみ。それ以外のブランチはプレビューURLになる。
+
 ## 公開前のTODO（確認事項）
 - 独自ドメインを決めたら `index.html` の canonical / `og:url` / `og:image` / `twitter:image` を差し替える。
-- プライバシーポリシーは仮文面。**本番前に必ず正式版へ差し替える**（個人情報を扱う前提）。
+- OGP画像（`public/ogp.png`）は仮。デザイン確定後に差し替える。
+- プライバシーポリシー（`Pages.tsx`）は運営会社・サービス名を入れた仮案。お問い合わせ窓口は暫定で運営会社のページ。**本番前に法務/専門家の確認を受ける**。
 - フッターの「お問い合わせ」は `href="#"` のまま。
-- `package.json` の `name` が `vite-react-starter` のまま。`.gitignore` と `_gitignore` が重複している。
-- 動画再生・会員登録・検索・予約を実装する際のバックエンド選定。
 - Xの公式アカウントを作ったら `twitter:site` を追加する。
